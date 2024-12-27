@@ -2,12 +2,12 @@ package com.ms.chat.application.services;
 
 import java.util.stream.Collectors;
 
+import com.ms.chat.application.Entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.ms.chat.application.Entity.userModel;
 import com.ms.chat.application.Repository.UserRepository;
 
 @Service
@@ -21,7 +21,7 @@ public class UserDetailService implements org.springframework.security.core.user
             throws UsernameNotFoundException {
 
         // Fetch the user by username
-        userModel user = userRepository.findByuserName(userName);
+        User user = userRepository.findByuserName(userName);
 
         if (user == null) {
             throw new UsernameNotFoundException("Could not find user with username: " + userName);

@@ -20,7 +20,7 @@ public class FileUploadService {
     public FileUploadResponse uploadFile(MultipartFile file) {
         try {
             // Upload file to Cloudinary and capture the response
-            Map<?, ?> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            Map<?, ?> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("folder","spring"));
 
             // Extract response data
             String url = (String) uploadResult.get("url");

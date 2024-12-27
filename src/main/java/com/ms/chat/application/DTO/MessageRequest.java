@@ -11,7 +11,7 @@ import lombok.Setter;
 public class MessageRequest {
 
     private ObjectId senderId; // Sender's ObjectId
-    private ObjectId receiverId; // Receiver's ObjectId
+        private ObjectId receiverId; // Receiver's ObjectId
     private String messageContent; // Message content
 
     

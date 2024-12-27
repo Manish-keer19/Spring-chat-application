@@ -2,33 +2,37 @@ package com.ms.chat.application.Entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
+
+
+
 
 @Data
-@Getter
-@Setter
 @Document(collection = "users")
-@NoArgsConstructor
-public class userModel {
+
+public class User {
     @Id
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
-    @NonNull
+
     @Indexed(unique = true)
     private String userName;
-    @NonNull
+
     private String password;
-    // @NonNull
+
+    private  String ProfilePic;
     private String email;
 
+    @DBRef
+    private UserAdditionalDetail profileDetail;
     private List<String> Role;
 
 }

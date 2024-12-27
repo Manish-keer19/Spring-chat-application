@@ -1,14 +1,19 @@
 package com.ms.chat.application.services;
 
 import java.util.Arrays;
+import java.util.List;
 
+
+import com.ms.chat.application.Entity.User;
+import com.ms.chat.application.Entity.UserAdditionalDetail;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.ms.chat.application.Entity.userModel;
 
 @Service
 public class Userservice {
@@ -16,15 +21,40 @@ public class Userservice {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public userModel SaveUser(userModel user) {
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Arrays.asList("USER")); // Wrapping "USER" in a List
-        // userModel dbuser = userRepository.save(user);
-        userModel dbuser = mongoTemplate.save(user);
-        return dbuser;
+    public  void  saveUser(User user){
+        mongoTemplate.save(user);
     }
+
+    public User findByEmail(String email) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("email").is(email));
+        User user = mongoTemplate.findOne(query, User.class);
+
+        return  user;
+    }
+
+
+
+    public User findByUsername(String userName){
+        Query query = new Query();
+
+        query.addCriteria(Criteria.where("userName").is(userName));
+
+      return  mongoTemplate.findOne(query,User.class);
+
+    }
+
+    public  User findById(ObjectId id){
+        Query query = new Query();
+
+        query.addCriteria(Criteria.where("_id").is(id));
+        return  mongoTemplate.findOne(query,User.class);
+    }
+
+     public List<User> getAllUserData(){
+        return  mongoTemplate.findAll(User.class);
+     }
+
 
 }

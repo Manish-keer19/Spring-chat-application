@@ -1,12 +1,15 @@
 package com.ms.chat.application.Controller;
 
+
+import com.ms.chat.application.Entity.User;
+import com.ms.chat.application.Response.LoginResponse;
+import com.ms.chat.application.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.ms.chat.application.Entity.userModel;
 import com.ms.chat.application.Response.Response;
 import com.ms.chat.application.Utils.JwtUtil;
 
@@ -22,6 +25,9 @@ public class AuthController {
 
     @Autowired
     private Userservice userService;
+
+    @Autowired
+    private AuthService authService;
     
  
     
@@ -33,10 +39,10 @@ public class AuthController {
 
     // Sign-up endpoint
     @PostMapping("/signup")
-    public Response<userModel> signUp(@RequestBody userModel user) {
+    public Response<String> signUp(@RequestBody User user) {
         try {
-            userModel dbuser =  userService.SaveUser(user);
-            return Response.success(200, "User registered successfully", dbuser);
+             authService.SignIn(user);
+            return Response.success(200, "User registered successfully","");
         } catch (Exception e) {
             return Response.error(400, "Error registering user", e.getMessage());
         }
@@ -44,23 +50,24 @@ public class AuthController {
 
     // Login endpoint
     @PostMapping("/login")
-    public Response<String> login(@RequestBody userModel user) {
+    public Response<LoginResponse> login(@RequestBody User user) {
         try {
             // Authenticate user
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword()));
-            
-            
-            // Generate JWT token
-           String userId = user.getId().toString();
-            String jwt = jwtUtil.generateToken(user.getUserName(),userId,"");
-            
+
+
+                String jwt = jwtUtil.generateToken(user.getUserName(),"");
+
+                User userData = userService.findByUsername(user.getUserName());
+
+                userData.setPassword(null);
+            LoginResponse loginResponse = new LoginResponse(jwt,userData);
             // Return successful response with JWT token
-            return Response.success(200, "User login successful", jwt);
+            return Response.success(200, "User login successful",loginResponse );
             
         } catch (Exception e) {
-            log.error("Exception occurred while creating authentication token", e);
-            
+
             // Return error response
             return Response.error(401, "Invalid username or password", e.getMessage());
         }

@@ -52,7 +52,7 @@ public class MessageController {
         ObjectId userId = userDetails.getUserId();
         try {
 
-            Message messages = messageService.createMessage(userId, receiverId, messageContent);
+            Message messages = messageService.createMessage(senderId, receiverId, messageContent);
             // Message messages = messageService.createMessage(senderId, receiverId,
             // messageContent);
 
@@ -85,7 +85,7 @@ public class MessageController {
             ObjectId userId = userDetails.getUserId();
 
             Message messages = messageService.getAlllMessages(userId, anotherUserId);
-            Response<Message> response = Response.success(200, "message has been created succefully", messages);
+            Response<Message> response = Response.success(200, "message has been fetched succefully", messages);
 
             return ResponseEntity.ok(response);
 

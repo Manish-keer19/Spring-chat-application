@@ -1,5 +1,7 @@
 package com.ms.chat.application.Response;
 
+import com.ms.chat.application.Entity.UserAdditionalDetail;
+
 public class FileUploadResponse {
 
     private String url;

@@ -1,12 +1,13 @@
 package com.ms.chat.application.Repository;
 
+import com.ms.chat.application.Entity.User;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.ms.chat.application.Entity.userModel;
-
-public interface UserRepository extends MongoRepository<userModel,ObjectId>  {
-    userModel findByuserName(String userName);
-    userModel deleteByuserName(String userName);
+public interface UserRepository extends MongoRepository<User,ObjectId>  {
+    User findByuserName(String userName);
+    User deleteByuserName(String userName);
     
 }
+
+

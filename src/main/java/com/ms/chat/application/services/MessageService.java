@@ -60,9 +60,6 @@ query.addCriteria(new Criteria().orOperator(
         mongoTemplate.save(existingMessage);
 
 
-            // Send the new message to WebSocket clients subscribed to "/topic/chat"
-            messagingTemplate.convertAndSend("/topic/chat", existingMessage);
-
         // Save the conversation to the database
         return existingMessage;
     }
@@ -71,14 +68,10 @@ query.addCriteria(new Criteria().orOperator(
     public Message getAlllMessages(ObjectId userId,ObjectId anotherUserId){
         
         Query query = new Query();
-
-        query.addCriteria(new Criteria().andOperator(
-            Criteria.where("anotherUser").is(anotherUserId),
-            Criteria.where("currentUser").is(userId)
-        
+        query.addCriteria(new Criteria().orOperator(
+                Criteria.where("currentUser").is(userId).and("anotherUser").is(anotherUserId),
+                Criteria.where("currentUser").is(anotherUserId).and("anotherUser").is(userId)
         ));
-
-
 
         return mongoTemplate.findOne(query, Message.class);
     }

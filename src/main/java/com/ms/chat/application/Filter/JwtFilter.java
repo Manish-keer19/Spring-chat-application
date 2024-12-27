@@ -35,6 +35,14 @@ public class JwtFilter extends OncePerRequestFilter {
     @NonNull
     FilterChain chain)
             throws ServletException, IOException {
+
+        String requestPath = request.getRequestURI();
+        // Skip OAuth2 login-related paths
+        if (requestPath.startsWith("/oauth2/")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         String authorizationHeader = request.getHeader("Authorization");
         String username = null;
         String jwt = null;

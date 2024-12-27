@@ -1,5 +1,7 @@
 package com.ms.chat.application.Entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import lombok.Getter;
@@ -12,8 +14,9 @@ import java.time.LocalDateTime;
 public class MessageItem {
 
     private String message; // The message content
-    private ObjectId sender; // Reference to the sender
 
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId sender; // Reference to the sender
     private LocalDateTime createdAt; // Timestamp when the message was created
 
     // Constructor with parameters

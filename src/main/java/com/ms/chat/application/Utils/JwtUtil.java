@@ -40,10 +40,10 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(String username, String userId, String email) {
+    public String generateToken(String username, String email) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", username);
-        claims.put("userId", userId); // Add userId to claims
+
 
         // Add email only if it's not null or empty
         if (email != null && !email.isEmpty()) {
@@ -72,11 +72,7 @@ public class JwtUtil {
         return (String) claims.get("email"); // Get the email from the claims
     }
 
-    // Method to extract userId from the token
-    public String extractUserId(String token) {
-        Claims claims = extractAllClaims(token);
-        return (String) claims.get("userId"); // Get the userId from the claims
-    }
+
 
 
     public Boolean validateToken(String token) {

@@ -1,8 +1,10 @@
 // CustomUserDetails.java
 package com.ms.chat.application.services;  // or com.ms.chat.application.security
 
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Getter;
@@ -13,6 +15,7 @@ import java.util.Collection;
 
 @Getter
 @Setter
+@Data
 public class CustomUserDetails implements UserDetails {
     
     
