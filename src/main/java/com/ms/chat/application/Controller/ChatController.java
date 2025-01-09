@@ -3,6 +3,7 @@ package com.ms.chat.application.Controller;
 import com.ms.chat.application.DTO.MessageRequest;
 import com.ms.chat.application.DTO.SampleMessageRequest;
 import com.ms.chat.application.Entity.Message;
+import com.ms.chat.application.Entity.MessageItem;
 import com.ms.chat.application.Response.Response;
 import com.ms.chat.application.services.MessageService;
 
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -25,29 +27,22 @@ public class ChatController {
 
     @Autowired
     private MessageService messageService;
-
-    // Endpoint to create and send a message (real-time WebSocket)
-//    @MessageMapping("/sendMessage")
-//    @SendTo("/public/messages")
-//    public SampleMessageRequest createMessage(@Payload SampleMessageRequest message) {
-//        log.info("we are in createMessage controller");
-//   log.info("message is message {}",message);
-//        return  message;
-//
-//
-//    }
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
 
     @MessageMapping("/sendMessage")
-    @SendTo("/public/messages")
-    public Message createMessage(@Payload MessageRequest message) {
-
-        Message messaages = messageService.createMessage(message.getSenderId(),
+    @SendTo("/public/{}")
+    public MessageItem createMessage(@Payload MessageRequest message) throws Exception {
+        log.info("sender is is {} rececverId is {} message is {} ",message.getSenderId(),message.getReceiverId(),message.getMessageContent());
+        MessageItem messaages = messageService.createMessage(message.getSenderId(),
                 message.getReceiverId(),
                 message.getMessageContent());
 
+
         return messaages;
     }
+
 @MessageMapping("/sendTypingMessage")
     @SendTo("/public/typing")
     public String SendtypingMessage() {
@@ -55,10 +50,40 @@ public class ChatController {
         }
 
 
-        
-        
 
-
+    @MessageMapping("/sendMessageString")
+    @SendTo("/public/messages")
+    public String sendMessageString(String msg){
+        return msg;
     }
+
+
+
+
+    @MessageMapping("/sendMessageSederAndReceiver")
+    public void sendMessageSederAndReceiver(@Payload MessageRequest message) throws Exception {
+        log.info("Sender: {}, Receiver: {}, Message: {}",
+                message.getSenderId(), message.getReceiverId(), message.getMessageContent());
+
+        // Create the message item
+        MessageItem messageItem = messageService.createMessage(
+                message.getSenderId(),
+                message.getReceiverId(),
+                message.getMessageContent()
+        );
+
+        // Send message to the sender's queue
+        messagingTemplate.convertAndSend("/user/queue/" + message.getSenderId(), messageItem);
+
+        // Send message to the receiver's queue
+        messagingTemplate.convertAndSend("/user/queue/" + message.getReceiverId(), messageItem);
+    }
+
+
+
+
+
+
+}
 
 

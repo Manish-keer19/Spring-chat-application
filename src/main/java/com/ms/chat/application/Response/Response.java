@@ -34,6 +34,8 @@ public class Response<T> {
         this.error = error;
     }
 
+    public Response(String messageCreatedSuccessfully) {
+    }
 
 
     // Convenience methods to create success and error responses

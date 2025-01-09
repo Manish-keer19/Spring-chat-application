@@ -13,7 +13,6 @@ import java.util.Map;
 
 @Service
 public class FileUploadService {
-
     @Autowired
     private Cloudinary cloudinary;
 

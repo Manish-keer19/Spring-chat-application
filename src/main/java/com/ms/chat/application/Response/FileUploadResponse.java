@@ -17,6 +17,7 @@ public class FileUploadResponse {
     public FileUploadResponse(String url, String secureUrl, String publicId, String format,
                               String originalFilename, long bytes, String message, boolean success) {
         this.url = url;
+        
         this.secureUrl = secureUrl;
         this.publicId = publicId;
         this.format = format;

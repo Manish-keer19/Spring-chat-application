@@ -61,6 +61,7 @@ public class SpringSecurity {
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
                     config.addAllowedOrigin("http://localhost:5173");  // Frontend URL
+//                    config.addAllowedOrigin("http://192.168.24.222:8081");  // Frontend URL
                     config.addAllowedMethod("*");  // Allow all methods (GET, POST, etc.)
                     config.addAllowedHeader("*");  // Allow all headers
                     config.setAllowCredentials(true);  // Allow credentials (cookies, etc.)
