@@ -60,7 +60,7 @@ public class SpringSecurity {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.addAllowedOrigin("http://localhost:5173");  // Frontend URL
+                    config.addAllowedOrigin("https://chat-desktop-94fmdd5nj-manish-keer19s-projects.vercel.app");  // Frontend URL
 //                    config.addAllowedOrigin("http://192.168.24.222:8081");  // Frontend URL
                     config.addAllowedMethod("*");  // Allow all methods (GET, POST, etc.)
                     config.addAllowedHeader("*");  // Allow all headers
