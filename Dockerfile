@@ -1,5 +1,8 @@
-# Use the Maven image with OpenJDK 17 for the build stage
-FROM maven:3.8.6-openjdk-17-slim AS build
+# Use OpenJDK 17 image for the build stage
+FROM openjdk:17-jdk-slim AS build
+
+# Install Maven
+RUN apt-get update && apt-get install -y maven
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -12,7 +15,7 @@ COPY .mvnw ./
 # Ensure that the mvnw file is executable
 RUN chmod +x .mvnw
 
-# Download the Maven dependencies (this will also help avoid re-downloading on every build)
+# Download the Maven dependencies
 RUN ./mvnw dependency:go-offline
 
 # Copy the rest of the source code
