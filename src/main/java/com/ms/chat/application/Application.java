@@ -11,17 +11,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-@EnableTransactionManagement
 public class Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
 
-	@Bean
-	public PlatformTransactionManager add(MongoDatabaseFactory dbFactory) {
-		return new MongoTransactionManager(dbFactory);
-	}
 
 	@Bean
 	public RestTemplate restTemplate() {
