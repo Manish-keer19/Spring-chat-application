@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y maven
 WORKDIR /app
 
 # Copy your project files
-COPY pom.xml ./  # If you have a Maven wrapper, copy the .mvn and mvnw files too
+COPY pom.xml ./
 COPY src ./src
 
 # Run Maven build command
