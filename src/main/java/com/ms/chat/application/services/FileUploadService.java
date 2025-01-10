@@ -16,27 +16,63 @@ public class FileUploadService {
     @Autowired
     private Cloudinary cloudinary;
 
-    public FileUploadResponse uploadFile(MultipartFile file) {
-        try {
-            // Upload file to Cloudinary and capture the response
-            Map<?, ?> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("folder","spring"));
+//    public FileUploadResponse uploadFile(MultipartFile file) {
+//        try {
+//            // Upload file to Cloudinary and capture the response
+//            Map<?, ?> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("folder","spring"));
+//
+//            // Extract response data
+//            String url = (String) uploadResult.get("url");
+//            String secureUrl = (String) uploadResult.get("secure_url");
+//            String publicId = (String) uploadResult.get("public_id");
+//            String format = (String) uploadResult.get("format");
+//            String originalFilename = (String) uploadResult.get("original_filename");
+//            Object bytesObj = uploadResult.get("bytes");
+//            long bytes = (bytesObj instanceof Integer) ? ((Integer) bytesObj).longValue() : (Long) bytesObj;
+//
+//            // Return the full response encapsulated in the FileUploadResponse object
+//            return new FileUploadResponse(url, secureUrl, publicId, format, originalFilename, bytes,
+//                    "File uploaded successfully!", true);
+//        } catch (IOException e) {
+//            // Handle exception and return failure response
+//            return new FileUploadResponse(null, null, null, null, null, 0,
+//                    "Error uploading file: " + e.getMessage(), false);
+//        }
+//    }
 
-            // Extract response data
-            String url = (String) uploadResult.get("url");
-            String secureUrl = (String) uploadResult.get("secure_url");
-            String publicId = (String) uploadResult.get("public_id");
-            String format = (String) uploadResult.get("format");
-            String originalFilename = (String) uploadResult.get("original_filename");
-            Object bytesObj = uploadResult.get("bytes");
-            long bytes = (bytesObj instanceof Integer) ? ((Integer) bytesObj).longValue() : (Long) bytesObj;
 
-            // Return the full response encapsulated in the FileUploadResponse object
-            return new FileUploadResponse(url, secureUrl, publicId, format, originalFilename, bytes,
-                    "File uploaded successfully!", true);
-        } catch (IOException e) {
-            // Handle exception and return failure response
-            return new FileUploadResponse(null, null, null, null, null, 0,
-                    "Error uploading file: " + e.getMessage(), false);
+
+        public FileUploadResponse uploadFile(MultipartFile file, String folderName) {
+            try {
+                // Ensure the folder name is not null or empty
+                if (folderName == null || folderName.isEmpty()) {
+                    folderName = "default"; // Fallback to a default folder if not specified
+                }
+
+                // Upload file to Cloudinary with the specified folder
+                Map<?, ?> uploadResult = cloudinary.uploader().upload(
+                        file.getBytes(),
+                        ObjectUtils.asMap("folder", "spring/" + folderName) // Dynamically set folder path
+                );
+
+                // Extract response data
+                String url = (String) uploadResult.get("url");
+                String secureUrl = (String) uploadResult.get("secure_url");
+                String publicId = (String) uploadResult.get("public_id");
+                String format = (String) uploadResult.get("format");
+                String originalFilename = (String) uploadResult.get("original_filename");
+                Object bytesObj = uploadResult.get("bytes");
+                long bytes = (bytesObj instanceof Integer) ? ((Integer) bytesObj).longValue() : (Long) bytesObj;
+
+                // Return the full response encapsulated in the FileUploadResponse object
+                return new FileUploadResponse(url, secureUrl, publicId, format, originalFilename, bytes,
+                        "File uploaded successfully!", true);
+            } catch (IOException e) {
+                // Handle exception and return failure response
+                return new FileUploadResponse(null, null, null, null, null, 0,
+                        "Error uploading file: " + e.getMessage(), false);
+            }
         }
     }
-}
+
+

@@ -23,7 +23,6 @@ public class User {
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
 
-    @Indexed(unique = true)
     private String userName;
 
     private String password;

@@ -20,7 +20,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // WebSocket connection endpoint
         registry.addEndpoint("/ws")  // Frontend will connect to /ws
-                .setAllowedOrigins("http://localhost:5173")  // Allow all origins for simplicity
+                .setAllowedOrigins("https://chat-desktop-94fmdd5nj-manish-keer19s-projects.vercel.app/")  // Allow all origins for simplicity
+                .setAllowedOrigins("http://localhost:5173")
                 .withSockJS();  // Fallback for clients that don't support WebSocket
     }
 }

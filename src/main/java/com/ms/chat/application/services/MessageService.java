@@ -34,7 +34,8 @@ public class MessageService {
     private FileUploadService fileUploadService;
 
     @Autowired
-    private SimpMessagingTemplate messagingTemplate; // Used to send messages over WebSocket
+   private SimpMessagingTemplate messagingTemplate ;
+
 
     // Method to create and save a message
     public MessageItem createMessage(ObjectId sender, ObjectId receiver, String messageContent) throws Exception {
@@ -83,7 +84,7 @@ public class MessageService {
             newMessage.setMessage(messageRequest.getMessageContent());
         }
         if (file != null) {
-            FileUploadResponse fileUploadResponse = fileUploadService.uploadFile(file);
+            FileUploadResponse fileUploadResponse = fileUploadService.uploadFile(file,"message");
             if (fileUploadResponse == null) {
                 throw new Exception("could not save the file in cloudinary");
 
@@ -120,6 +121,8 @@ public class MessageService {
         mongoTemplate.save(existingMessage);
 
 
+        messagingTemplate.convertAndSend("/user/queue/" + messageRequest.getSenderId(), newMessage);
+        messagingTemplate.convertAndSend("/user/queue/" + messageRequest.getReceiverId(), newMessage);
         // Save the conversation to the database
         return newMessage;
     }

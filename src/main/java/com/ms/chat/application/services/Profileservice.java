@@ -12,6 +12,9 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Service
 public class Profileservice {
@@ -23,47 +26,85 @@ public class Profileservice {
 
     @Autowired
     private  FileUploadService fileUploadService;
-    public UserAdditionalDetail saveUserAdditionDetailAndfile(UserAdditionalDetail userAdditionalDetail, ObjectId userId, MultipartFile file)throws  Exception{
+    public User saveUserAdditionDetailAndfile(UserAdditionalDetail userAdditionalDetail, ObjectId userId, MultipartFile file)throws  Exception{
         User dbUser = userservice.findById(userId);
+        UserAdditionalDetail existingProfile = null;
 
         if (dbUser!=null) {
+            if (file!=null) {
+                FileUploadResponse fileUploadResponse = fileUploadService.uploadFile(file,"profile");
+                if (fileUploadResponse.getSecureUrl().length() == 0) {
+                    throw  new Exception("could not save the file in cloudinary");
 
-
-            FileUploadResponse fileUploadResponse = fileUploadService.uploadFile(file);
-
-            if (fileUploadResponse.getSecureUrl().length() == 0) {
-                throw  new Exception("could not save the file in cloudinary");
-
+                }
+                dbUser.setProfilePic(fileUploadResponse.getSecureUrl());
             }
 
-            dbUser.setProfilePic(fileUploadResponse.getSecureUrl());
+            if (dbUser.getProfileDetail()!=null) {
 
-            UserAdditionalDetail dbUserDetail = mongoTemplate.save(userAdditionalDetail);
-            if (userAdditionalDetail != null) {
-                dbUser.setProfileDetail(dbUserDetail);
-                userservice.saveUser(dbUser);
-                return userAdditionalDetail;
+                System.out.println("profile exist");
+               existingProfile = dbUser.getProfileDetail();
+                // Use a partial update by setting only non-null or non-empty fields
+                // Update 'bio' if it's not null or empty
+                if (userAdditionalDetail.getBio() != null && !userAdditionalDetail.getBio().isEmpty()) {
+                    existingProfile.setBio(userAdditionalDetail.getBio());
+                }
+
+                // Update 'pronoun' if it's not null or empty
+                if (userAdditionalDetail.getPronoun() != null && !userAdditionalDetail.getPronoun().isEmpty()) {
+                    existingProfile.setPronoun(userAdditionalDetail.getPronoun());
+                }
+
+                // Update 'gender' if it's not null or empty
+                if (userAdditionalDetail.getGender() != null && !userAdditionalDetail.getGender().isEmpty()) {
+                    existingProfile.setGender(userAdditionalDetail.getGender());
+                }
+
+                // Update 'profession' if it's not null or empty
+                if (userAdditionalDetail.getProfession() != null && !userAdditionalDetail.getProfession().isEmpty()) {
+                    existingProfile.setProfession(userAdditionalDetail.getProfession());
+                }
+
+            } else {
+                System.out.println("profile does not exist");
+                // If the profile doesn't exist, return null or throw an exception as needed
+               existingProfile = new UserAdditionalDetail();
+
+                existingProfile.setBio(userAdditionalDetail.getBio());
+                existingProfile.setId(new ObjectId());
+                existingProfile.setPronoun(userAdditionalDetail.getPronoun());
+                existingProfile.setProfession(userAdditionalDetail.getProfession());
+                existingProfile.setGender(userAdditionalDetail.getGender());
+
+                dbUser.setProfileDetail(existingProfile);
 
             }
-            return null;
+            // Save the updated profile back to the database
+              mongoTemplate.save(existingProfile);
+            mongoTemplate.save(dbUser);
+
+
+            return dbUser; // Return the updated profile
 
         }
         return  null;
 
     }
- public UserAdditionalDetail saveUserAdditionDetail(UserAdditionalDetail userAdditionalDetail, ObjectId userId)throws  Exception{
+ public UserAdditionalDetail saveUserAdditionDetail(UserAdditionalDetail userAdditionalDetail, ObjectId userId,MultipartFile file)throws  Exception{
         User dbUser = userservice.findById(userId);
 
         if (dbUser!=null) {
-
-
-
-
-
-
             UserAdditionalDetail dbUserDetail = mongoTemplate.save(userAdditionalDetail);
             if (userAdditionalDetail != null) {
                 dbUser.setProfileDetail(dbUserDetail);
+                if (file != null) {
+                    FileUploadResponse fileUploadResponse = fileUploadService.uploadFile(file,"profile");
+                    if (fileUploadResponse.getSecureUrl().length() == 0) {
+                        throw new Exception("could not save the file in cloudinary");
+                    }else {
+                        dbUser.setProfilePic(fileUploadResponse.getSecureUrl());
+                    }
+                }
                 userservice.saveUser(dbUser);
                 return userAdditionalDetail;
 

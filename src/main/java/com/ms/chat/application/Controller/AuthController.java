@@ -1,6 +1,7 @@
 package com.ms.chat.application.Controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ms.chat.application.Entity.User;
 import com.ms.chat.application.Response.LoginResponse;
 import com.ms.chat.application.services.AuthService;
@@ -16,6 +17,7 @@ import com.ms.chat.application.Utils.JwtUtil;
 import com.ms.chat.application.services.Userservice;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Slf4j
@@ -39,10 +41,19 @@ public class AuthController {
 
     // Sign-up endpoint
     @PostMapping("/signup")
-    public Response<String> signUp(@RequestBody User user) {
+    public Response<String> signUp(@RequestParam("User") String user , @RequestParam("file") MultipartFile file) {
         try {
-             authService.SignIn(user);
-            return Response.success(200, "User registered successfully","");
+            ObjectMapper objectMapper = new ObjectMapper();
+            User user1 = objectMapper.readValue(user, User.class);
+            log.info(user1.toString());
+            log.info(file.toString());
+           Boolean IsUserExists =   authService.signUp(user1,file);
+           if (IsUserExists) {
+               return Response.success(200, "User registered successfully","");
+           }
+           else {
+               return Response.error(400, "could not register user","");
+           }
         } catch (Exception e) {
             return Response.error(400, "Error registering user", e.getMessage());
         }

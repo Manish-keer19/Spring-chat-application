@@ -45,7 +45,7 @@ public class SpringSecurity {
         return http.authorizeHttpRequests(auth -> auth
 
                 .requestMatchers("/","api/v1/auth/**").permitAll()
-                        .requestMatchers("/oauth2/**").permitAll()
+                        .requestMatchers("api/v1/oauth2/**").permitAll()
                  .requestMatchers("api/v1/chat/**", "api/v1/user/**").authenticated()
                 .requestMatchers("/api/v1/**").permitAll()
                 .requestMatchers("/ws/**").permitAll()
@@ -53,7 +53,7 @@ public class SpringSecurity {
                 .anyRequest().permitAll())
                 .oauth2Login(oauth -> oauth
 //                        .defaultSuccessUrl("http://localhost:8080/api/v1/success",true)
-                        .defaultSuccessUrl("http://localhost:5173/home",true)
+                        .defaultSuccessUrl("https://chat-desktop-94fmdd5nj-manish-keer19s-projects.vercel.app/#/",true)
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
@@ -61,7 +61,7 @@ public class SpringSecurity {
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
                     config.addAllowedOrigin("https://chat-desktop-94fmdd5nj-manish-keer19s-projects.vercel.app");  // Frontend URL
-//                    config.addAllowedOrigin("http://192.168.24.222:8081");  // Frontend URL
+                    config.addAllowedOrigin("http://localhost:5173/");  // Frontend URL
                     config.addAllowedMethod("*");  // Allow all methods (GET, POST, etc.)
                     config.addAllowedHeader("*");  // Allow all headers
                     config.setAllowCredentials(true);  // Allow credentials (cookies, etc.)

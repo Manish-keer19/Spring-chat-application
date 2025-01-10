@@ -22,8 +22,9 @@ public class Userservice {
     private MongoTemplate mongoTemplate;
 
 
-    public  void  saveUser(User user){
-        mongoTemplate.save(user);
+    public  User  saveUser(User user){
+
+      return  mongoTemplate.save(user);
     }
 
     public User findByEmail(String email) {

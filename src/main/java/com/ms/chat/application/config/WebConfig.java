@@ -11,7 +11,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://chat-desktop-94fmdd5nj-manish-keer19s-projects.vercel.app")  // Replace with your frontend URL
+                .allowedOrigins("http://localhost:5173")  // Replace with your frontend URL
+                .allowedOrigins("https://chat-desktop-94fmdd5nj-manish-keer19s-projects.vercel.app/")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);

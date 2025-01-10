@@ -1,6 +1,9 @@
 package com.ms.chat.application.Controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ms.chat.application.DTO.MessageRequest;
 import com.ms.chat.application.Entity.User;
 import com.ms.chat.application.Entity.UserAdditionalDetail;
 import com.ms.chat.application.Response.FileUploadResponse;
@@ -20,6 +23,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/profile")
 @Slf4j
@@ -36,11 +42,17 @@ public class ProfileController {
 
 
     @PostMapping("/add-profile")
-    public ResponseEntity<Response<UserAdditionalDetail>> addProfileDetail( @RequestBody UserAdditionalDetail userAdditionalDetail ) {
+    public ResponseEntity<Response<?>> addProfileDetail(@RequestParam("userAdditionalDetail") String userAdditionalDetail, @RequestParam(value = "file", required = false)  MultipartFile file) throws JsonProcessingException {
+
+        // Parse the JSON into the DTO class
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserAdditionalDetail userAdditionalDetail1 = objectMapper.readValue(userAdditionalDetail, UserAdditionalDetail.class);
+        Map res = new HashMap();
+        res.put("userAdditionalDetail",userAdditionalDetail1);
+        res.put("file",file);
+//        return new ResponseEntity<>(Response.success(200, "Profile sent successfully", res), HttpStatus.OK);
 
         try {
-
-
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
             // Cast the Principal to CustomUserDetails to access the userId
@@ -48,10 +60,10 @@ public class ProfileController {
 
             ObjectId userId =(ObjectId) userDetails.getUserId();
             // Save the profile detail
-            UserAdditionalDetail dbUserAdditionalDetail = profileservice.saveUserAdditionDetail(userAdditionalDetail,userId);
+         User user = profileservice.saveUserAdditionDetailAndfile(userAdditionalDetail1,userId,file);
 
             // Return a successful response with status 200
-            return new ResponseEntity<>(Response.success(200, "User profile detail created successfully", dbUserAdditionalDetail), HttpStatus.CREATED);
+            return new ResponseEntity<>(Response.success(200, "User profile detail created successfully", user), HttpStatus.CREATED);
 
         } catch (Exception e) {
             // Return an error response if something goes wrong
@@ -62,7 +74,7 @@ public class ProfileController {
 
 
     @GetMapping("/delete-profile/{profileId}")
-    public ResponseEntity<Response<UserAdditionalDetail>> deleteUserDetail(@PathVariable ObjectId profileId) {
+    public ResponseEntity<Response<?>> deleteUserDetail(@PathVariable ObjectId profileId) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -84,24 +96,26 @@ public class ProfileController {
     }
 
 
-    @PostMapping("/upadte-profile")
-    public  ResponseEntity<Response<UserAdditionalDetail>> updateProfile(@RequestBody UserAdditionalDetail userProfile ) {
+//    @PostMapping("/upadte-profile")
+//    public  ResponseEntity<Response<UserAdditionalDetail>> updateProfile(@RequestBody UserAdditionalDetail userProfile ) {
+//
+//
+//        try {
+//
+//               UserAdditionalDetail updatedProfile = profileservice.updateProfile(userProfile);
+//
+//            if (updatedProfile == null) {
+//                return new ResponseEntity<>(Response.error(404, "Profile not found", null), HttpStatus.NOT_FOUND);
+//            }
+//
+//            return new ResponseEntity<>(Response.success(200, "Profile updated successfully", updatedProfile), HttpStatus.OK);
+//
+//        }
+//         catch (Exception e) {
+//            return new ResponseEntity<>(Response.error(401, "could not update the profile",e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
 
-        try {
-
-               UserAdditionalDetail updatedProfile = profileservice.updateProfile(userProfile);
-
-            if (updatedProfile == null) {
-                return new ResponseEntity<>(Response.error(404, "Profile not found", null), HttpStatus.NOT_FOUND);
-            }
-
-            return new ResponseEntity<>(Response.success(200, "Profile updated successfully", updatedProfile), HttpStatus.OK);
-
-        }
-         catch (Exception e) {
-            return new ResponseEntity<>(Response.error(401, "could not update the profile",e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
 }

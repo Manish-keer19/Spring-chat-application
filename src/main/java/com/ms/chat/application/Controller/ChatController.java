@@ -32,7 +32,7 @@ public class ChatController {
 
 
     @MessageMapping("/sendMessage")
-    @SendTo("/public/{}")
+    @SendTo("/public/messages")
     public MessageItem createMessage(@Payload MessageRequest message) throws Exception {
         log.info("sender is is {} rececverId is {} message is {} ",message.getSenderId(),message.getReceiverId(),message.getMessageContent());
         MessageItem messaages = messageService.createMessage(message.getSenderId(),

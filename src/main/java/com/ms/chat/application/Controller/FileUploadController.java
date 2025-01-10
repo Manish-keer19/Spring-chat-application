@@ -25,7 +25,7 @@ public class FileUploadController {
 
     @PostMapping
     public FileUploadResponse uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-        return fileUploadService.uploadFile(file);  // Call the service to upload the file
+        return fileUploadService.uploadFile(file,"Testing");  // Call the service to upload the file
     }
 
 
