@@ -53,14 +53,14 @@ public class SpringSecurity {
                 .anyRequest().permitAll())
                 .oauth2Login(oauth -> oauth
 //                        .defaultSuccessUrl("http://localhost:8080/api/v1/success",true)
-                        .defaultSuccessUrl("https://chat-desktop-94fmdd5nj-manish-keer19s-projects.vercel.app/#/",true)
+                        .defaultSuccessUrl("https://chat-desktop-app.vercel.app/#/home",true)
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.addAllowedOrigin("https://chat-desktop-94fmdd5nj-manish-keer19s-projects.vercel.app");  // Frontend URL
+                    config.addAllowedOrigin("https://chat-desktop-app.vercel.app/");  // Frontend URL
                     config.addAllowedOrigin("http://localhost:5173/");  // Frontend URL
                     config.addAllowedMethod("*");  // Allow all methods (GET, POST, etc.)
                     config.addAllowedHeader("*");  // Allow all headers
