@@ -41,7 +41,8 @@ public class AuthController {
 
     // Sign-up endpoint
     @PostMapping("/signup")
-    public Response<String> signUp(@RequestParam("User") String user , @RequestParam("file") MultipartFile file) {
+    public Response<String> signUp(@RequestParam("User") String user , @RequestParam(value = "file", required = false) MultipartFile file) {
+        System.out.println("hello bhai we are in signup");
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             User user1 = objectMapper.readValue(user, User.class);

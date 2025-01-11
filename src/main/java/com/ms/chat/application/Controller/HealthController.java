@@ -14,7 +14,12 @@ public class HealthController {
                 <!DOCTYPE html>
                       <html>
                       <head>
-                          <title>Spring Boot Project</title>
+                       <link
+                            rel="icon"
+                            type="image/svg+xml"
+                            href="https://res.cloudinary.com/manish19/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1736520712/spring/profile/fh9sq7idtyidxjpq2lhx.webp"
+                          />
+                          <title>Manish's Spring Boot Project</title>
                           <style>
                               body {
                                   font-family: Arial, sans-serif;

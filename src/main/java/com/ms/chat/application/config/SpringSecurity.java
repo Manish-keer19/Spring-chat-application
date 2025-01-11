@@ -75,12 +75,6 @@ public class SpringSecurity {
 
 
 
-
-
-
-
-
-
     @Bean
     public AuthenticationProvider  authenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
