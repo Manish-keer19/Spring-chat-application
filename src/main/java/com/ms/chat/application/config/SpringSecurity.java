@@ -18,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -39,6 +40,9 @@ public class SpringSecurity {
 
     @Autowired
     private JwtFilter jwtFilter;
+
+    @Autowired
+    private ClientRegistrationRepository clientRegistrationRepository;
     @Bean
     public SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception {
 
@@ -52,6 +56,7 @@ public class SpringSecurity {
                 .requestMatchers("api/v1/Admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll())
                 .oauth2Login(oauth -> oauth
+                                .clientRegistrationRepository(clientRegistrationRepository)
 //                        .defaultSuccessUrl("http://localhost:8080/api/v1/success",true)
                         .defaultSuccessUrl("https://chat-desktop-app.vercel.app/#/home",true)
                 )
@@ -69,6 +74,10 @@ public class SpringSecurity {
                 }))
                 .build();
     }
+
+
+
+
 
 
 
