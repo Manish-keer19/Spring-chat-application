@@ -17,9 +17,9 @@ public class HealthController {
                        <link
                             rel="icon"
                             type="image/svg+xml"
-                            href="https://res.cloudinary.com/manish19/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1736520712/spring/profile/fh9sq7idtyidxjpq2lhx.webp"
+                            href="https://imgs.search.brave.com/UTk-nf9D-CIV3CnrEK5RJBI6WYkT5_pY-guFit1J-pU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMuamF2YXRwb2lu/dC5jb20vc3ByaW5n/Ym9vdC9pbWFnZXMv/c3ByaW5nLWJvb3Qt/dHV0b3JpYWwuanBn"
                           />
-                          <title>Manish's Spring Boot Project</title>
+                          <title>Spring-boot-Project</title>
                           <style>
                               body {
                                   font-family: Arial, sans-serif;
