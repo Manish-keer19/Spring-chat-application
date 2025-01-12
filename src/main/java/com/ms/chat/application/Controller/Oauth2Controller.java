@@ -95,6 +95,8 @@ public class Oauth2Controller {
 
     @GetMapping("/success")
     public ResponseEntity<Response<?>> authLoginSuceessfully(@AuthenticationPrincipal OAuth2User oAuth2User) {
+        System.out.println("hello bhai we are in success");
+//        System.out.println("oAuth2User is " + oAuth2User.getAttributes().toString());
         if (oAuth2User == null) {
             return ResponseEntity.ok(Response.error(404, "User is null", null));
         }

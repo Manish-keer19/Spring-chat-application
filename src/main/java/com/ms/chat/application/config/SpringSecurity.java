@@ -54,9 +54,10 @@ public class SpringSecurity {
                 .requestMatchers("api/v1/Admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll())
                 .oauth2Login(oauth -> oauth
-                                .clientRegistrationRepository(clientRegistrationRepository)
+
 //                        .defaultSuccessUrl("http://localhost:8080/api/v1/success",true)
                         .defaultSuccessUrl("https://chat-desktop-app.vercel.app/#/home",true)
+//                                .defaultSuccessUrl("http://localhost:5173/#/home",true)
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
