@@ -48,8 +48,4 @@ public class FileUploadController {
         return new ResponseEntity<>(Response.success(200, "Profile sent successfully", data), HttpStatus.OK);
     }
 
-
-
-
-
 }

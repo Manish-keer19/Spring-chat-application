@@ -47,16 +47,18 @@ public class SpringSecurity {
         return http.authorizeHttpRequests(auth -> auth
 
                 .requestMatchers("/","api/v1/auth/**").permitAll()
-                        .requestMatchers("api/v1/oauth2/**").permitAll()
-                 .requestMatchers("api/v1/chat/**", "api/v1/user/**").authenticated()
+                        .requestMatchers("/api/v1/oauth2/**").permitAll()
+                 .requestMatchers("/api/v1/chat/**", "api/v1/user/**").authenticated()
                 .requestMatchers("/api/v1/**").permitAll()
                 .requestMatchers("/ws/**").permitAll()
-                .requestMatchers("api/v1/Admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/v1/Admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll())
                 .oauth2Login(oauth -> oauth
 
 //                        .defaultSuccessUrl("http://localhost:8080/api/v1/success",true)
                         .defaultSuccessUrl("https://chat-desktop-app.vercel.app/#/home",true)
+//                                .defaultSuccessUrl("https://manishchatapp.netlify.app/#/home",true)
+
 //                                .defaultSuccessUrl("http://localhost:5173/#/home",true)
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
@@ -66,6 +68,8 @@ public class SpringSecurity {
                     CorsConfiguration config = new CorsConfiguration();
                     config.addAllowedOrigin("https://chat-desktop-app.vercel.app");  // Frontend URL
                     config.addAllowedOrigin("http://localhost:5173");  // Frontend URL
+                    config.addAllowedOrigin("https://manishchatapp.netlify.app");
+//                    config.addAllowedOrigin("https://manishchatapp.netlify.app");
                     config.addAllowedMethod("*");  // Allow all methods (GET, POST, etc.)
                     config.addAllowedHeader("*");  // Allow all headers
                     config.setAllowCredentials(true);  // Allow credentials (cookies, etc.)

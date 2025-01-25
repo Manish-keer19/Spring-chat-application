@@ -60,7 +60,7 @@ public class ChatController {
 
 
 
-    @MessageMapping("/sendMessageSederAndReceiver")
+    @MessageMapping("/sendMessageSenderAndReceiver")
     public void sendMessageSederAndReceiver(@Payload MessageRequest message) throws Exception {
         log.info("Sender: {}, Receiver: {}, Message: {}",
                 message.getSenderId(), message.getReceiverId(), message.getMessageContent());
@@ -73,6 +73,7 @@ public class ChatController {
         );
 
         // Send message to the sender's queue
+//        System.out.println("Sending message to: /user/queue/" + message.getReceiverId());
         messagingTemplate.convertAndSend("/user/queue/" + message.getSenderId(), messageItem);
 
         // Send message to the receiver's queue
