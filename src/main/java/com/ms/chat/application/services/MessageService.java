@@ -123,7 +123,7 @@ public class MessageService {
 
         messagingTemplate.convertAndSend("/user/queue/" + messageRequest.getSenderId(), newMessage);
         messagingTemplate.convertAndSend("/user/queue/" + messageRequest.getReceiverId(), newMessage);
-        // Save the conversation to the database
+
         return newMessage;
     }
 
