@@ -56,7 +56,7 @@ public class SpringSecurity {
                 .oauth2Login(oauth -> oauth
 
 //                        .defaultSuccessUrl("http://localhost:8080/api/v1/success",true)
-                        .defaultSuccessUrl("https://chat-desktop-app.vercel.app/#/home",true)
+                        .defaultSuccessUrl("https://manishchatapp.vercel.app/#/home",true)
 //                                .defaultSuccessUrl("https://manishchatapp.netlify.app/#/home",true)
 
 //                                .defaultSuccessUrl("http://localhost:5173/#/home",true)
@@ -66,7 +66,7 @@ public class SpringSecurity {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.addAllowedOrigin("https://chat-desktop-app.vercel.app");  // Frontend URL
+                    config.addAllowedOrigin("https://manishchatapp.vercel.app");  // Frontend URL
                     config.addAllowedOrigin("http://localhost:5173");  // Frontend URL
                     config.addAllowedOrigin("https://manishchatapp.netlify.app");
 //                    config.addAllowedOrigin("https://manishchatapp.netlify.app");
