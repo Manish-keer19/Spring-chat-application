@@ -36,8 +36,12 @@ public class SpringSecurity {
     private UserDetailService userDetailService;
 
 
+
     @Autowired
     private JwtFilter jwtFilter;
+
+    @Autowired
+    private  OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
@@ -54,12 +58,8 @@ public class SpringSecurity {
                 .requestMatchers("/api/v1/Admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll())
                 .oauth2Login(oauth -> oauth
+                        .successHandler(oAuth2LoginSuccessHandler)
 
-//                        .defaultSuccessUrl("http://localhost:8080/api/v1/success",true)
-//                        .defaultSuccessUrl("https://manishchatapp.vercel.app/#/home",true)
-//                                .defaultSuccessUrl("https://manishchatapp.netlify.app/#/home",true)
-
-                                .defaultSuccessUrl("http://localhost:5173/#/home",true)
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
