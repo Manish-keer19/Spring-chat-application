@@ -56,10 +56,10 @@ public class SpringSecurity {
                 .oauth2Login(oauth -> oauth
 
 //                        .defaultSuccessUrl("http://localhost:8080/api/v1/success",true)
-                        .defaultSuccessUrl("https://manishchatapp.vercel.app/#/home",true)
+//                        .defaultSuccessUrl("https://manishchatapp.vercel.app/#/home",true)
 //                                .defaultSuccessUrl("https://manishchatapp.netlify.app/#/home",true)
 
-//                                .defaultSuccessUrl("http://localhost:5173/#/home",true)
+                                .defaultSuccessUrl("http://localhost:5173/#/home",true)
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
@@ -69,6 +69,7 @@ public class SpringSecurity {
                     config.addAllowedOrigin("https://manishchatapp.vercel.app");  // Frontend URL
                     config.addAllowedOrigin("http://localhost:5173");  // Frontend URL
                     config.addAllowedOrigin("https://manishchatapp.netlify.app");
+//                    config.addAllowedOriginPattern("*");
 //                    config.addAllowedOrigin("https://manishchatapp.netlify.app");
                     config.addAllowedMethod("*");  // Allow all methods (GET, POST, etc.)
                     config.addAllowedHeader("*");  // Allow all headers

@@ -102,8 +102,6 @@ public class MessageController {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         ObjectId userId = userDetails.getUserId();
         try {
-
-
             MessageItem messages = messageService.createMessageWithMedia(messageRequest,file);
 
             if (messages != null) {
