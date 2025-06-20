@@ -92,8 +92,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String userId = dbUser.getId().toString();
 
         // ✅ Redirect with both token and userId
-//        String redirectUrl = String.format("https://manishchatapp.vercel.app/#/oauth-success?token=%s&userId=%s", token, userId);
-        String redirectUrl = String.format("http://localhost:5173/#/oauth-success?token=%s&userId=%s", token, userId);
+        String redirectUrl = String.format("https://manishchatapp.vercel.app/#/oauth-success?token=%s&userId=%s", token, userId);
+//        String redirectUrl = String.format("http://localhost:51 -73/#/oauth-success?token=%s&userId=%s", token, userId);
         response.sendRedirect(redirectUrl);
     }
 }
