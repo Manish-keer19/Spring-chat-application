@@ -93,15 +93,16 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 
 
-        // ✅ Determine platform
-        String platform = request.getParameter("platform");
-        String redirectUrl;
+        String platform = (String) request.getSession().getAttribute("platform");
 
+        String redirectUrl;
         if ("mobile".equals(platform)) {
             redirectUrl = String.format("manishapp://oauth-success?token=%s&userId=%s", token, userId);
         } else {
             redirectUrl = String.format("https://manishchatapp.vercel.app/#/oauth-success?token=%s&userId=%s", token, userId);
         }
+
+
 
         // ✅ Redirect with both token and userId
 //        String redirectUrl = String.format("https://manishchatapp.vercel.app/#/oauth-success?token=%s&userId=%s", token, userId);
