@@ -91,8 +91,20 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         // ✅ Also get the MongoDB ID
         String userId = dbUser.getId().toString();
 
+
+
+        // ✅ Determine platform
+        String platform = request.getParameter("platform");
+        String redirectUrl;
+
+        if ("mobile".equals(platform)) {
+            redirectUrl = String.format("manishapp://oauth-success?token=%s&userId=%s", token, userId);
+        } else {
+            redirectUrl = String.format("https://manishchatapp.vercel.app/#/oauth-success?token=%s&userId=%s", token, userId);
+        }
+
         // ✅ Redirect with both token and userId
-        String redirectUrl = String.format("https://manishchatapp.vercel.app/#/oauth-success?token=%s&userId=%s", token, userId);
+//        String redirectUrl = String.format("https://manishchatapp.vercel.app/#/oauth-success?token=%s&userId=%s", token, userId);
 //        String redirectUrl = String.format("http://localhost:51 -73/#/oauth-success?token=%s&userId=%s", token, userId);
         response.sendRedirect(redirectUrl);
     }
