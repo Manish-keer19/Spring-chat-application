@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -23,9 +24,9 @@ import java.util.*;
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
-    private  Userservice userService;
+    private Userservice userService;
     @Autowired
-    private  JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -92,7 +93,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String userId = dbUser.getId().toString();
 
 
-
         String platform = (String) request.getSession().getAttribute("platform");
 
         String redirectUrl;
@@ -101,7 +101,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         } else {
             redirectUrl = String.format("https://manishchatapp.vercel.app/#/oauth-success?token=%s&userId=%s", token, userId);
         }
-
 
 
         // ✅ Redirect with both token and userId

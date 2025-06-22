@@ -55,7 +55,7 @@ public class SpringSecurity {
                  .requestMatchers("/api/v1/chat/**", "api/v1/user/**").authenticated()
                 .requestMatchers("/api/v1/**").permitAll()
                 .requestMatchers("/ws/**").permitAll()
-                .requestMatchers("/api/v1/Admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll())
                 .oauth2Login(oauth -> oauth
                         .successHandler(oAuth2LoginSuccessHandler)
